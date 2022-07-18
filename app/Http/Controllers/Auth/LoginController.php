@@ -36,7 +36,7 @@ class LoginController extends Controller
             //Session::put("project_id" , Auth::user()->project_id);
             return '/index';
         }else{
-            return '/index';
+            return '/customer';
         }
         
     }

@@ -15,3 +15,6 @@
     <link href="{{asset('problem/css/bootstrap.min.css.map')}}" rel="stylesheet" type="text/css">
 
     <link href="https://kit-pro.fontawesome.com/releases/v5.15.3/css/pro.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" 
+     href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">

@@ -78,7 +78,6 @@ class IndexController extends Controller
     public function login(){
         
         if (Auth::check()) {
-            
             return redirect()->route('index');
         }
         $title = 'GM Tech - Login';

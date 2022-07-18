@@ -22,6 +22,7 @@ use App\Models\parts;
 use App\Models\labour;
 use Illuminate\Support\Str;
 use Session;
+use Illuminate\Support\Facades\Hash;
 use Helper;
 
 class HomeController extends Controller
@@ -43,13 +44,21 @@ class HomeController extends Controller
      */
 
 
-     public function index(){
+    public function index(){
+        if (Auth::user()->role_id != 1) {
+            return redirect()->route('customer');
+        }
         return view('web.index');
     }
     public function customer()
     {
-        $requests = service_request::where('is_active',1)->get();
-        return view('web.customer')->with(compact('requests'));
+        $requests = service_request::where('is_active',1);
+        if (Auth::user()->role_id != 1) {
+            $requests = $requests->where('tech',Auth::user()->id);
+        }
+        $requests = $requests->get();
+        $techs = User::where('role_id',3)->where('is_active',1)->where('is_deleted',0)->get();
+        return view('web.customer')->with(compact('requests','techs'));
     }
     public function entry($id) {
         $amount = 0;
@@ -65,6 +74,14 @@ class HomeController extends Controller
         }
         return view('web.entry')->with(compact('id','parts','labours','service','amount'));
         // code...
+    }
+    public function assign_tech(Request $request)
+    {
+        $fields['tech'] = $request->tech;
+        $update = service_request::where('id',$request->request_id)->update($fields);
+        $status['status'] = 1;
+        $status['message'] = "Tech has been assigned the task";
+        return json_encode($status);
     }
 
     public function part_submit(Request $request)
@@ -92,16 +109,17 @@ class HomeController extends Controller
                 return redirect()->back()->with('error', 'Error while saving part');
             }
         } catch(Exception $e){
-            return redirect()->back()->with('error', 'Error will saving record');
+            return redirect()->back()->with('error', 'Error while saving record');
         }
     }
     
     public function labour_submit(Request $request)
     {
+        // dd($_POST);
         try{
             $fields = array();
             $fields['request_id'] = $request->request_id;
-            $fields['tech'] = $request->tech;
+            $fields['tech'] = $request->tech_id;
             
             $fields['hours'] = $request->hours;
             $fields['pay_type'] = $request->pay_type;
@@ -110,19 +128,18 @@ class HomeController extends Controller
                 if (isset($_POST['work_date']) && $_POST['work_date'] != '') {
                     $fields['work_date'] = $request->work_date;
                 }
-
                 $create = labour::where("id" , $_POST['record_id'])->update($fields);
             } else{
                 $fields['work_date'] = $request->work_date;
                 $create = labour::create($fields);
             }
             if ($create) {
-                return redirect()->back()->with('message', 'Part Saved');
+                return redirect()->back()->with('message', 'Record saved');
             } else{
-                return redirect()->back()->with('error', 'Error while saving part');
+                return redirect()->back()->with('error', 'Error while saving record');
             }
         } catch(Exception $e){
-            return redirect()->back()->with('error', 'Error will saving record');
+            return redirect()->back()->with('error', 'Error while saving record');
         }
 
     }
@@ -135,6 +152,7 @@ class HomeController extends Controller
 
     public function invoice_submit(Request $request)
     {
+        // dd($_POST);
         $payment = array();
         $payment['is_paid'] = 1;
         $token_ignore = ['_token' => '' ];
@@ -149,12 +167,12 @@ class HomeController extends Controller
                 $status['status'] = 1;
                 return json_encode($status);
             } else{
-                $status['message'] = "Error will saving record";
+                $status['message'] = "Error while saving record";
                 $status['status'] = 0;
                 return json_encode($status);
             }
         } catch(Exception $e){
-            $status['message'] = "Error will saving record";
+            $status['message'] = "Error while saving record";
             $status['status'] = 0;
             return json_encode($status);
         }
@@ -174,7 +192,7 @@ class HomeController extends Controller
                                 <a href="tel:'.$service->phone.'">'.$service->phone.'</a>
                             </div>
                             <div class="col-12 col-md-12 col-sm-12 col-lg-4 col-xl-4 col-xxl-4">
-                                <p>Bitt to : '.$service->location.'</p>
+                                <p>Bill to : '.$service->location.'</p>
                             </div>
                             <div class="col-12 col-md-12 col-sm-12 col-lg-4 col-xl-4 col-xxl-4">
                                 <h4>Invoice : 175558588</h4>
@@ -199,7 +217,7 @@ class HomeController extends Controller
                             <tbody>';
                             foreach ($service->labours as $key => $value) {
                                 $body .= '<tr>
-                                    <td>'.$value->tech.'</td>
+                                    <td>'.$value->labour->name.'</td>
                                     <td>DueNow</td>
                                     <td>Nassou</td>
                                     <td></td>
@@ -258,23 +276,9 @@ class HomeController extends Controller
                                     <td>$'.($part->quantity_price*$part->sell_price).'</td>
                                 </tr>';
                             }
-                            $body .= '</tbody>
-                        </table>
-                    </div>
-                    <div class="table-start-center">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Labour</th>
-                                    <th scope="col">Hour Rate</th>
-                                    <th scope="col">Hours</th>
-                                    <th scope="col">Ext Price</th>
-                                </tr>
-                            </thead>
-                            <tbody>';
                             foreach ($service->labours as $j => $labour) {
                                 $body .= '<tr>
-                                    <td>'.$labour->tech.'</td>
+                                    <td>'.$labour->labour->name.'</td>
                                     <td>$'.$labour->hourly_rate.'</td>
                                     <td>'.$labour->hours.'</td>
                                     <td>$'.($labour->hours*$labour->hourly_rate).'</td>
@@ -287,14 +291,19 @@ class HomeController extends Controller
                                     <td>Total: </td>
                                     <td>$'.$service->invoice->amount.'</td>
                                 </tr>
-
-
                             </tbody>
                         </table>
-                    </div> </div>';
+                    </div>
+                    </div>';
         $status['message'] = $body;
         $status['status'] = 1;
         return json_encode($status);
+    }
+
+    public function add_technician() {
+        $techs = User::where('role_id',3)->where('is_active',1)->where('is_deleted',0)->get();
+        // dd($techs);
+        return view('web.technician')->with(compact('techs'));
     }
 
 
@@ -316,6 +325,33 @@ class HomeController extends Controller
         $title = 'Dan TerryBerry - Home';
         // dd($production_schedule);
         return view('web.index')->with(compact('production_schedule','user','title'));
+    }
+    public function technician_submit(Request $request)
+    {
+        $post_feilds['name'] = $request->name;
+        $post_feilds['email'] = $request->email;
+        if (isset($_POST['record_id']) && $_POST['record_id']!='') {
+            if (isset($_POST['password']) && $_POST['password']!='') {
+                $post_feilds['password'] = Hash::make($request->password);
+            }
+            $update = User::where('id',$request->record_id)->update($post_feilds);
+        } else{
+            $check = User::where('email',$request->email)->where('is_active',1)->where('is_deleted',0)->first();
+            if ($check) {
+                return redirect()->back()->with('error', 'The email has already been taken.');
+            }
+            $post_feilds['password'] = Hash::make($request->password);
+            $create = User::create($post_feilds);
+        }
+        
+        return back();
+    }
+    public function delete_tech($id)
+    {
+        $fields['is_active'] = 0;
+        $fields['is_deleted'] = 1;
+        $update = User::where('id',$id)->update($fields);
+        return back()->with('message','Tech has been deleted');
     }
 
 

@@ -70,7 +70,7 @@
                                                             <th>Sell Price</th>
                                                             <th>Location</th>
                                                             <th>Quantity Price</th>
-                                                            <th class="text-end">Action</th>
+                                                            <th class="">Action</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -125,7 +125,9 @@
                                                         <a href="invoices-settings.html" class="invoices-settings-icon">
                                                             <i data-feather="settings"></i>
                                                         </a>
+                                                        @if($labours->isEmpty())
                                                         <a href="javavoid:;" data-bs-toggle="modal" data-bs-target="#laborModal" class="btn"> <i data-feather="plus-circle"></i> Add New Labor </a>
+                                                        @endif
                                                     </div>
                                                 </div>
                                             </div>
@@ -146,14 +148,14 @@
                                                                 <th>Hours</th>
                                                                 <th>Pay Type</th>
                                                                 <th>Hourly Rate</th>
-                                                                <th class="text-end">Action</th>
+                                                                <th class="">Action</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
                                                             @foreach($labours as $k => $labour)
                                                             <tr>
                                                                 <td>{{++$k}}</td>
-                                                                <td>{{$labour->tech}}</td>
+                                                                <td>{{$labour->labour->name}}</td>
                                                                 <td>{{$labour->work_date}}</td>
                                                                 <td>{{$labour->hours}}</td>
                                                                 <td>{{$labour->pay_type}}</td>
@@ -162,7 +164,7 @@
                                                                 <div class="dropdown dropdown-action">
                                                                     <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-h"></i></a>
                                                                     <div class="dropdown-menu dropdown-menu-right">
-                                                                        <a class="dropdown-item edit-labour" data-id="{{$labour->id}}" data-tech="{{$labour->tech}}" data-work_date="{{$labour->work_date}}" data-hours="{{$labour->hours}}" data-pay_type="{{$labour->pay_type}}" data-hourly_rate="{{$labour->hourly_rate}}"  ><i class="far fa-edit me-2"></i>Edit</a>
+                                                                        <a class="dropdown-item edit-labour" data-id="{{$labour->id}}" data-tech="{{$labour->labour->name}}" data-work_date="{{$labour->work_date}}" data-hours="{{$labour->hours}}" data-pay_type="{{$labour->pay_type}}" data-hourly_rate="{{$labour->hourly_rate}}"  ><i class="far fa-edit me-2"></i>Edit</a>
                                                                         <a class="dropdown-item" href="{{route('delete_labour',$labour->id)}}"><i class="far fa-edit me-2"></i>Delete</a>
                                                                     </div>
                                                                 </div>
@@ -423,8 +425,7 @@
                                                             <div class="certificate-logo">
                                                                 <img src="{{asset('web/assets/img/logo-certificate.png')}}" class="img-fluid" alt="img" />
                                                                 <ul>
-                                                                    <li>Air Conditioning &</li>
-                                                                    <li>Heating Services</li>
+                                                                    <li>Air Conditioning & Heating Services</li>
                                                                 </ul>
                                                             </div>
                                                         </div>
@@ -488,7 +489,7 @@
                                                             </tbody>
                                                         </table>
                                                     </div> -->
-                                                    <div class="table-center text-left">
+                                                    <div class="table-center text-left mt-2">
                                                         <ul>
                                                             <li>Problem</li>
                                                             <li>
@@ -496,7 +497,7 @@
                                                             </li>
                                                         </ul>
                                                     </div>
-                                                    <div class="table-center text-left">
+                                                    <div class="table-center text-left mt-2">
                                                         <ul>
                                                             <li>Work Performed</li>
                                                             <li>
@@ -518,7 +519,7 @@
                                                             </tbody>
                                                         </table>
                                                     </div> -->
-                                                    <div class="table-center text-left">
+                                                    <div class="table-center text-left mt-2">
                                                         <ul>
                                                             <li>Recomendation</li>
                                                             <li>
@@ -565,9 +566,27 @@
                                                                     @endphp
                                                                 </tr>
                                                                 @endforeach
+                                                                @foreach($labours as $labour)
+                                                                <tr>
+                                                                    <td>{{$labour->labour->name}}</td>
+                                                                    <td>{{$labour->hours}}</td>
+                                                                    <td>${{$labour->hourly_rate}}</td>
+                                                                    <td>${{($labour->hours*$labour->hourly_rate)}}</td>
+                                                                    @php
+                                                                    $total += ($labour->hours*$labour->hourly_rate);
+                                                                    @endphp
+                                                                </tr>
+                                                                @endforeach
+                                                                <tr>
+                                                                    <td></td>
+                                                                    <td></td>
+                                                                    <td>Total: </td>
+                                                                    <td>${{$amount}}</td>
+                                                                </tr>
                                                             </tbody>
                                                         </table>
                                                     </div>
+                                                    {{--
                                                     <div class="table-start-center">
                                                         <table class="table">
                                                             <thead>
@@ -599,6 +618,7 @@
                                                             </tbody>
                                                         </table>
                                                     </div>
+                                                    --}}
                                                     <div class="table-center-height">
                                                         <table class="table">
                                                             <thead>
@@ -681,10 +701,10 @@
                                                     <label>Components</label>
                                                     <input class="form-control" type="text" name="component" id="component" required placeholder="" />
                                                     <!-- <select class="form-select" name="components">
-														<option>-- Select --</option>
-														<option value="1">Quo aspernatur odit</option>    
-														<option value="2">Aliquip porro ipsa</option>    
-													</select> -->
+                                                        <option>-- Select --</option>
+                                                        <option value="1">Quo aspernatur odit</option>    
+                                                        <option value="2">Aliquip porro ipsa</option>    
+                                                    </select> -->
                                                     <span class="text-danger" style="font-weight: bold; font-style: italic; font-family: calibri;"></span>
                                                 </div>
                                                 <div class="form-group col-md-6">
@@ -705,13 +725,13 @@
                                                     <label>Location</label>
                                                     <input class="form-control" type="text" name="location" id="location" required placeholder="" />
                                                     <!-- <select class="form-select" name="location">
-														<option>-- Select --</option>
-														<option value="location1">Location1</option>
-														<option value="location2">Location2</option>
-														<option value="location3">Location3</option>
-														<option value="location4">Location4</option>
-														<option value="location5">Location5</option>
-													</select> -->
+                                                        <option>-- Select --</option>
+                                                        <option value="location1">Location1</option>
+                                                        <option value="location2">Location2</option>
+                                                        <option value="location3">Location3</option>
+                                                        <option value="location4">Location4</option>
+                                                        <option value="location5">Location5</option>
+                                                    </select> -->
                                                     <span class="text-danger" style="font-weight: bold; font-style: italic; font-family: calibri;"></span>
                                                 </div>
                                                 <div class="form-group col-md-6">
@@ -724,7 +744,7 @@
                                             </div>
                                             <div class="row">
                                                 <div class="form-group float-right mb-0">
-                                                    <button class="btn btn-primary" type="submit" data-bs-dismiss="modal">Add Parts</button>
+                                                    <button class="btn btn-primary" type="submit" >Add Parts</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -757,7 +777,8 @@
                                             <div class="row">
                                                 <div class="form-group col-md-6">
                                                     <label>Tech</label>
-                                                    <input class="form-control" type="text" name="tech" id="tech" required placeholder="" />
+                                                    <input type="hidden" name="tech_id" value="{{$service->tech}}">
+                                                    <input class="form-control" type="text" name="tech" id="tech" value="{{$service->technician->name}}" disabled required/>
                                                     <span class="text-danger" style="font-weight: bold; font-style: italic; font-family: calibri;"></span>
                                                 </div>
                                                 <div class="col-md-6">
@@ -790,7 +811,7 @@
                                         </div>
                                         <div class="row">
                                             <div class="form-group float-right mb-0">
-                                                <button class="btn btn-primary" type="submit" data-bs-dismiss="modal">Add Labor</button>
+                                                <button class="btn btn-primary" type="submit" >Add Labor</button>
                                             </div>
                                         </div>
                                     </form>

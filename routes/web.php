@@ -48,6 +48,7 @@ Route::group(['middleware' => 'auth'], function()
 
     Route::get('/index', [HomeController::class, 'index'])->name('index');
     Route::get('/dashboard', [HomeController::class, 'index'])->name('index');
+    Route::get('/dashboards', [HomeController::class, 'index'])->name('dashboard');
     Route::get('/customer', [HomeController::class, 'customer'])->name('customer');
     Route::get('/delete_part/{id}', [HomeController::class, 'delete_part'])->name('delete_part');
     Route::get('/delete_labour/{id}', [HomeController::class, 'delete_labour'])->name('delete_labour');
@@ -58,6 +59,10 @@ Route::group(['middleware' => 'auth'], function()
     Route::post('/labour_submit', [HomeController::class, 'labour_submit'])->name('labour_submit');
     Route::post('/invoice_submit', [HomeController::class, 'invoice_submit'])->name('invoice_submit');
     Route::post('/invoice_modal', [HomeController::class, 'invoice_modal'])->name('invoice_modal');
+    Route::get('/add-technician', [HomeController::class, 'add_technician'])->name('technician.add');
+    Route::post('/technician_submit', [HomeController::class, 'technician_submit'])->name('technician_submit');
+    Route::get('/delete_tech/{id}', [HomeController::class, 'delete_tech'])->name('delete_tech');
+    Route::post('/assign_tech', [HomeController::class, 'assign_tech'])->name('assign_tech');
 
 
 

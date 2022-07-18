@@ -15,12 +15,14 @@
         <div class="sidebar sidebar-five">
             <div id="sidebar-menu" class="sidebar-menu sidebar-menu-five">
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    @if(Auth::user()->id == 1)
                     <li class="nav-item submenu-five" role="presentation">
                         <a href="{{route('index')}}" class="new-active">
                             <i class="fas fa-home"></i>
                             <span>Dashboard</span>
                         </a>
                     </li>
+                    @endif
                     <li class="nav-item submenu-five" role="presentation">
                         <a href="{{route('customer')}}">
                             <i class="fas fa-user"></i>
@@ -47,6 +49,14 @@
                             <span>Reviews</span>
                         </a>
                     </li>
+                    @if(Auth::user()->id == 1)
+                    <li class="nav-item submenu-five" role="presentation">
+                        <a href="{{route('technician.add')}}">
+                            <i class="fa fa-user"></i>
+                            <span>Add Technicians</span>
+                        </a>
+                    </li>
+                    @endif
                 </ul>
             </div>
         </div>
@@ -57,7 +67,7 @@
                         <img src="assets/img/profiles/avatar-14.png" alt="" />
                         <span class="status online"></span>
                     </span>
-                    <span>Admin</span>
+                    <span>{{Auth::user()->name}}</span>
                 </a>
                 <div class="dropdown-menu">
                     <a class="dropdown-item" href="{{route('logout')}}"><i data-feather="log-out" class="me-1"></i> Logout</a>

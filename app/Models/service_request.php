@@ -26,4 +26,8 @@ class service_request extends Model
     {
         return $this->hasMany(parts::class, 'request_id');
     }
+    public function technician()
+    {
+        return $this->belongsTo(User::class, 'tech');
+    }
 }

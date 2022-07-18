@@ -18,6 +18,67 @@
 <script src="{{asset('web/assets/plugins/moment/moment.min.js')}}"></script>
 <script src="{{asset('web/assets/js/bootstrap-datetimepicker.min.js')}}"></script>
 <script src="https://cdn.ckeditor.com/4.17.1/standard/ckeditor.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
+
+
+
+
+<script>
+  
+
+  // $(document).ready(function(){
+  //   var description = CKEDITOR.replace( 'description' );
+  //   description.on( 'change', function( evt ) {
+  //       $("#description").text( evt.editor.getData())    
+  //   });
+  // })
+  @if(Session::has('message'))
+  toastr.options =
+  {
+    "closeButton" : true,
+    "progressBar" : true,
+    "debug": false,
+    "positionClass": "toast-bottom-right",
+  }
+        toastr.success("{{ session('message') }}");
+        
+  @endif
+
+  @if(Session::has('error'))
+  toastr.options =
+  {
+    "closeButton" : true,
+    "progressBar" : true,
+    "debug": false,
+    "positionClass": "toast-bottom-right",
+  }
+        toastr.error("{{ session('error') }}");
+        
+  @endif
+
+  @if(Session::has('info'))
+  toastr.options =
+  {
+    "closeButton" : true,
+    "progressBar" : true,
+    "debug": false,
+    "positionClass": "toast-bottom-right",
+  }
+        toastr.info("{{ session('info') }}");
+  @endif
+
+  @if(Session::has('warning'))
+  toastr.options =
+  {
+    "closeButton" : true,
+    "progressBar" : true,
+    "debug": false,
+    "positionClass": "toast-bottom-right",
+  }
+        toastr.warning("{{ session('warning') }}");
+  @endif
+</script>
 
 <!-- CSS File End -->
 <script>
@@ -155,4 +216,35 @@
         $("#quantity_price").val($(this).data("quantity_price"))
         $("#exampleModal").modal("show")
     });
+    $(document).on('click','#add-tech-button',function(){
+        $("#password").attr("required","true");
+        $("#password").val("")
+    })
+    $(document).on('click','.edit-tech',function(){
+        $("#record_id").val($(this).data("id"))
+        $("#name").val($(this).data("name"))
+        $("#email").val($(this).data("email"))
+        $("#password").val("")
+        $("#password").removeAttr("required")
+        $("#exampleModal").modal("show")
+    })
+    $(document).on('change','.tech-name',function(){
+        var tech = $(this).val();
+        var request_id = $(this).closest('td').find('.request_id').val();
+        var element = $(this);
+        $.ajax({
+            type: 'post',
+            dataType : 'json',
+            url: "{{route('assign_tech')}}",        
+            data: {tech: tech , request_id:request_id, _token: '{{csrf_token()}}'},
+            success: function (response) {
+                if (response.status == 1) {
+                    toastr.success(response.message);
+                    element.closest('tr').find('.dropdown-action').css('display','')
+                }else{
+                    toastr.error(response.message);    
+                }
+            }
+        });
+    })
 </script>

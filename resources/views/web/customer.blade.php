@@ -28,6 +28,7 @@
                                                     <th>Amount</th>
                                                     <th>Due Date</th>
                                                     <th>Status</th>
+                                                    <th>Technician</th>
                                                     <th class="text-right">Action</th>
                                                 </tr>
                                             </thead>
@@ -36,7 +37,7 @@
                                                 <tr>
                                                     <td>
                                                         <h2 class="table-avatar">
-                                                            <a href="#">
+                                                            <a href="javascript:void()">
                                                                 <img class="avatar avatar-sm me-2 avatar-img rounded-circle" src="http://gmenertechcorp.demo-orbitdesignagency.com/public/profile_image/1652220855.png" alt="User Image" />
                                                                 {{$request->name}}
                                                             </a>
@@ -45,8 +46,24 @@
                                                     <td>${{$request->invoice? $request->invoice->amount:'0'}}</td>
                                                     <td>{{date("M d,Y" ,strtotime($request->created_at))}}</td>
                                                     <td><span class="badge {{$request->is_paid == 0?'bg-fail-light':'bg-success-light'}} ">{{$request->is_paid == 0?'Unpaid':'Paid'}}</span></td>
+                                                    @if (Auth::user()->role_id == 1) {
+                                                    <td>
+                                                        <input type="hidden" class="request_id" value="{{$request->id}}">
+                                                        <select class="form-select tech-name" name="tech-name" {{$request->is_paid == 1?'disabled':''}}>
+                                                            <option selected disabled>Select Tech</option>
+                                                            @foreach($techs as $tech)
+                                                            <option value="{{$tech->id}}" {{$request->tech == $tech->id?'selected':''}}>{{$tech->name}}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </td>
+                                                    @else
+                                                    <td>
+                                                        {{$request->technician->name}}
+                                                    </td>
+                                                    @endif
                                                     <td class="text-right">
-                                                        <div class="dropdown dropdown-action">
+                                                        
+                                                        <div class="dropdown dropdown-action" style="display: {{$request->tech == null?'none':''}}">
                                                             <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-h"></i></a>
                                                             <div class="dropdown-menu dropdown-menu-right">
                                                                 <!-- <a class="dropdown-item" href="#"><i class="far fa-edit me-2"></i>Edit</a> -->

@@ -213,7 +213,7 @@ input[type=password] {
     border:none;
 }
 .inner-tabs #accordionExample h2 button:after{
-    filter: brightness(0) invert(1);
+    /* filter: brightness(0) invert(1); */
 }
 .inner-tabs #accordionExample .payment-total h2{
     font-size: 26px;
@@ -258,8 +258,8 @@ input[type=password] {
     color: #1b2559;
 }
 .inner-tabs #accordionExample h2 button{
-    background-color: rgb(27, 37, 89);
-    color: rgb(255, 255, 255);
+    background-color: #d3d3d3;
+    color: #000;
     padding: 15px;
     border-radius: 0px;
     font-size: 18px;
@@ -336,23 +336,35 @@ input[type=password] {
     letter-spacing: 1px;
     margin: 0 0 20px;
 }
+.table-center-height {
+    margin-top: 0.5rem!important;
+}
+
+.table-start-center {
+    margin-top: 0.5rem!important;
+}
+
+.table-center {
+    margin-top: 0.5rem!important;
+}
 .inner-tabs #accordionExample .certification-set .table-start-center table thead tr th{
-    
-    background: #101924;
-    color: #fff;
+    background: #d3d3d3;
+    color: #000;
     text-align: center;
     font-size: 18px;
-    font-weight: 500;
+    font-weight: 600;
     font-family: 'circularstd';
+    border: 1px solid #000;
+    margin: 0 0 10px;
 }
 .inner-tabs #accordionExample .certification-set .table-start-center table tbody tr td{
         font-size: 16px;
-    font-weight: 400;
-    font-family: 'circularstd';
-    color: #000;
-    text-align: center;
-    background: #1019240d;
-    border: 1px solid #000;
+        font-weight: 400;
+        font-family: 'circularstd';
+        color: #000;
+        text-align: center;
+        background: #fff;
+        border: 1px solid #000;
 }
 .inner-tabs #accordionExample .certification-set .table-start table{
     margin:0 0 10px;
@@ -373,47 +385,49 @@ input[type=password] {
     background: #1019240d;
 }
 .inner-tabs #accordionExample .certification-set .table-center-height table thead tr th{
-    
-    background: #101924;
-    color: #fff;
+    background: #d3d3d3;
+    color: #000;
     font-size: 18px;
-    font-weight: 500;
-    text-align:center;
+    font-weight: 600;
+    text-align:
+    center;
     font-family: 'circularstd';
-    
+    border: 1px solid #000;
 }
 .inner-tabs #accordionExample .certification-set .table-center-height table tbody tr td{
         font-size: 16px;
-    font-weight: 400;
-    font-family: 'circularstd';
-    color: #000;
-    background: #1019240d;
+        font-weight: 400;
+        font-family: 'circularstd';
+        color: #000;
+        background: #fff;
         height: 350px;
+        border: 1px solid #000;
 }
 .inner-tabs #accordionExample .certification-set .table-center ul{
     padding:0;
 }
 .inner-tabs #accordionExample .certification-set .table-center ul li:first-child{
-    
-    background: #101924;
-    color: #fff;
+    background: #d3d3d3;
+    color: #000;
     font-size: 18px;
-    font-weight: 500;
-    text-align:left;
+    font-weight: 600;
+    text-align:
+    left;
     font-family: 'circularstd';
     height:40px;
     line-height:40px;
     padding-left: 10px;
-    
+    border: 1px solid #000;
 }
 .inner-tabs #accordionExample .certification-set .table-center ul li:last-child p{
         font-size: 16px;
-    font-weight: 400;
-    font-family: 'circularstd';
-    color: #000;
-    background: #1019240d;
-    text-align:left;
+        font-weight: 400;
+        font-family: 'circularstd';
+        color: #000;
+        background: #fff;
+        text-align: center;
         padding: 30px 10px;
+        border: 1px solid;
 }
 textarea.form-control {
 	resize: vertical
@@ -649,7 +663,8 @@ table.table th {
 	display: flex;
 	justify-content: start;
 	align-items: center;
-	margin-bottom: 14px
+	margin-bottom: 14px;
+	cursor: pointer;
 }
 
 .table .dropdown-item:last-child {
@@ -914,18 +929,16 @@ button.bg-danger:hover {
 }
 
 .btn-primary {
-	background-color: #7638ff;
-	border: 1px solid #7638ff
+	background-color: #d3d3d3;
+	border: 1px solid #d3d3d3;
+	color: #000;
 }
 
 .btn-primary:hover,
 .btn-primary:focus,
 .btn-primary.active,
 .btn-primary:active,
-.open>.dropdown-toggle.btn-primary {
-	background-color: #621aff;
-	border: 1px solid #621aff
-}
+.open>.dropdown-toggle.btn-primary {box-shadow: 0 0 7px 3px #ccc;background: #fff;border: none;color: #000;}
 
 .btn-primary.active.focus,
 .btn-primary.active:focus,
@@ -3904,8 +3917,9 @@ html.menu-opened body {
 .sidebar-menu-five li a:hover {
 }
 ul.breadcrumb.add-btns >li .active{
-        background: #f01921;
-    border: 1px solid #f01921;
+        background: #fff;
+        border: none;
+        box-shadow: 0 0 7px 3px #ccc;
 }
 .sidebar-menu-five>ul>li>.new-active{
 }
@@ -8031,11 +8045,11 @@ body[data-layout-mode=dark] .alertify .ajs-footer .ajs-buttons .ajs-button.ajs-o
 
 .invoices-settings-btn .btn {
 	font-weight: 600;
-	color: #fff;
+	color: #000;
 	padding: 12px 0;
 	min-width: 167px;
-	background: #1b2559;
-	border: 1px solid #1b2559;
+	background: #d3d3d3;
+	border: 1px solid #d3d3d3;
 	border-radius: 6px;
 	display: -webkit-box;
 	display: -ms-flexbox;
@@ -8048,10 +8062,7 @@ body[data-layout-mode=dark] .alertify .ajs-footer .ajs-buttons .ajs-button.ajs-o
 	-ms-flex-pack: center
 }
 
-.invoices-settings-btn .btn:hover {
-	background: #7638ff;
-	border: 1px solid #7638ff
-}
+.invoices-settings-btn .btn:hover {background: #fff;box-shadow: 0 0 7px 3px #ccc;}
 
 .invoices-settings-btn .btn .feather {
 	margin-right: 6px
@@ -10176,11 +10187,11 @@ td {
 }
 ul.breadcrumb.add-btns >li a {
     font-weight: 600;
-    color: #fff;
+    color: #000;
     padding: 12px 0;
     min-width: 167px;
-    background: #1b2559;
-    border: 1px solid #1b2559;
+    background: #d3d3d3;
+    border: 1px solid #d3d3d3;
     border-radius: 6px;
     display: -webkit-box;
     display: -ms-flexbox;
@@ -10192,15 +10203,12 @@ ul.breadcrumb.add-btns >li a {
     -webkit-justify-content: center;
 }
 h3.page-title.parts-css {
-    background-color: #1b2559;
-    color: #fff;
+    background-color: #d3d3d3;
+    color: #000;
     padding: 10px;
     border-radius: 7px;
 }
-ul.breadcrumb.add-btns >li a:hover {
-    background: #f01921;
-    border: 1px solid #f01921;
-}
+ul.breadcrumb.add-btns >li a:hover {background: #fff;box-shadow: 0 0 7px 3px #ccc;}
 .table-responsive {
     height: 245px;
 }
@@ -10290,22 +10298,22 @@ ul.breadcrumb.add-btns >li a:hover {
     letter-spacing: 1px;
 }
 #certificate-poppup .certification-set .table-start-center table thead tr th{
-    
-    background: #101924;
-    color: #fff;
+    background: #d3d3d3d3;
+    color: #000;
     text-align: center;
     font-size: 18px;
-    font-weight: 500;
+    font-weight: 600;
+    border: 1px solid #000;
     font-family: 'circularstd';
 }
 #certificate-poppup .certification-set .table-start-center table tbody tr td{
         font-size: 16px;
-    font-weight: 400;
-    font-family: 'circularstd';
-    color: #000;
-    text-align: center;
-    background: #1019240d;
-    border: 1px solid #000;
+        font-weight: 400;
+        font-family: 'circularstd';
+        color: #000;
+        text-align: center;
+        background: #fff;
+        border: 1px solid #000;
 }
 #certificate-poppup .certification-set .table-start table{
     margin:0 0 10px;
@@ -10347,25 +10355,32 @@ ul.breadcrumb.add-btns >li a:hover {
     padding:0;
 }
 #certificate-poppup .certification-set .table-center ul li:first-child{
-    
-    background: #101924;
-    color: #fff;
+    background: #d3d3d3;
+    color: #000;
+    border: 1px solid #000;
     font-size: 18px;
     font-weight: 500;
-    text-align:left;
+    text-align:
+    left;
     font-family: 'circularstd';
     height:40px;
     line-height:40px;
     padding-left: 10px;
-    
 }
 #certificate-poppup .certification-set .table-center ul li:last-child p{
         font-size: 16px;
-    font-weight: 400;
-    font-family: 'circularstd';
-    color: #000;
-    background: #1019240d;
-    text-align:left;
+        font-weight: 400;
+        font-family: 'circularstd';
+        color: #000;
+        background: #fff;
+        text-align:
+        left;
         padding: 20px 10px;
-
+        border: 1px solid #000;
+}
+.toast-success{
+	background-color: #51A351 !important;
+}
+.toast-error{
+	background-color: #BD362F;
 }
